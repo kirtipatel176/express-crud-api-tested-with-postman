@@ -196,7 +196,8 @@ app.get('/products', (req, res) => {
 });
 
 //add a products
-app.post('/prodcts', (req, res) => {
+app.post('/products', (req, res) => {
+  console.log("POST /products hit ✅");
   const newProduct = {
     id: products.length + 1,
     name: req.body.name
