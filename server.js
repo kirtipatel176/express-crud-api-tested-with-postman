@@ -1,4 +1,5 @@
 // server.js
+//in this code for the todo list
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -52,3 +53,4 @@ app.delete('/api/todos/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
