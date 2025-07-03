@@ -1,16 +1,16 @@
-const moongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-const connectDB = async () =>{
-    try 
-    {
-        await moongoose.connect(process.env.MONGO_URI);
-        console.log('MongoDB connected successfully');
-    }
-    catch(err)
-    {
-        console.error('MongoDB connection failed:', err.message);
-        process.exit(1); // Exit the process with failure
-    }
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('✅ MongoDB Connected');
+  } catch (err) {
+    console.error('❌ DB Connection Failed:', err.message);
+    process.exit(1);
+  }
 };
 
-module.exports=connectDB;
+module.exports = connectDB;

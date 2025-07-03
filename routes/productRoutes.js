@@ -1,7 +1,5 @@
-// routes/productRoutes.js
 const express = require('express');
-const { body, validationResult } = require('express-validator');
-const Product = require('../models/Product');
+const Product = require('../models/product');
 
 const router = express.Router();
 
@@ -11,41 +9,30 @@ router.get('/', async (req, res) => {
   res.json(products);
 });
 
-// GET one
+// GET one by ID
 router.get('/:id', async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (!product) return res.status(404).send('Product not found');
   res.json(product);
 });
 
-// POST with validation
-router.post(
-  '/',
-  [
-    body('name').isLength({ min: 3 }).withMessage('Name must be at least 3 chars'),
-    body('price').isFloat({ gt: 0 }).withMessage('Price must be a number > 0')
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
-    const product = new Product(req.body);
-    await product.save();
-    res.status(201).json(product);
-  }
-);
+// POST create
+router.post('/', async (req, res) => {
+  const { name, price } = req.body;
+  const product = new Product({ name, price });
+  await product.save();
+  res.status(201).json(product);
+});
 
 // PUT update
 router.put('/:id', async (req, res) => {
-  const updated = await Product.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true
-  });
+  const { name, price } = req.body;
+  const updated = await Product.findByIdAndUpdate(req.params.id, { name, price }, { new: true });
   if (!updated) return res.status(404).send('Product not found');
   res.json(updated);
 });
 
-// DELETE
+// DELETE remove
 router.delete('/:id', async (req, res) => {
   const deleted = await Product.findByIdAndDelete(req.params.id);
   if (!deleted) return res.status(404).send('Product not found');
